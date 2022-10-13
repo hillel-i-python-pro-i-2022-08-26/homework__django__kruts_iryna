@@ -1,11 +1,11 @@
 #Homework
 
-##Django. Start
+##Django. Contacts and commands.
 
 Main task:
->Создать проект на Django
+>Сделать контакты.
 
-All details:[HERE](https://lms.ithillel.ua/groups/62de6dfc9aec6f42f8454737/homeworks/633435ac414ec94e84e1f9e6)
+All details:[HERE](https://lms.ithillel.ua/groups/62de6dfc9aec6f42f8454737/homeworks/63435a1e29a0ef4b4054e19d)
 
 Make all actions needed for run homework from zero `make homework-i-run`
 
