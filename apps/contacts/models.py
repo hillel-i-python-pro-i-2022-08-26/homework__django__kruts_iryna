@@ -17,4 +17,3 @@ class Contacts(models.Model):
 # verbose_name_plural = "Contacts"
 
 
-print(Contacts.objects.all())
