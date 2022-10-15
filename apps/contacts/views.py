@@ -1,7 +1,7 @@
 from django.http import HttpResponse, HttpRequest
 from django.shortcuts import render
 from .models import Contacts
-from .forms import ContactsForm
+from .forms import ContactsForm, UserForm
 
 
 def show_all_contacts(request: HttpRequest) -> HttpResponse:
@@ -10,8 +10,10 @@ def show_all_contacts(request: HttpRequest) -> HttpResponse:
         request, "contacts/index.html", {"title": "Contacts", "contacts": contacts}
     )
 
-def generate_contacts(request: HttpRequest) -> HttpResponse:
-    pass
+def create_contact(request: HttpRequest) -> HttpResponse:
+    form = UserForm()
+    context = {'form': form}
+    return render(request, "contacts/create_contact.html", context)
 
 def get_contact(request: HttpRequest, pk: int) -> HttpResponse:
     contact = Contacts.objects.get(pk=pk)
@@ -24,7 +26,7 @@ def edit_contact(request: HttpRequest, pk: int) -> HttpResponse:
     contact = Contacts.objects.get(pk=pk)
     form = ContactsForm(instance=contact)
     return render(
-        request, 'contacts/edit_contact.html',
+        request, 'contacts/edit_form.html',
         {
             "title": "Edit contact",
             "form": form
