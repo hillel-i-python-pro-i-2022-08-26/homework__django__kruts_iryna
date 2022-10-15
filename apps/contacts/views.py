@@ -4,7 +4,7 @@ from .models import Contacts
 
 
 def show_all_contacts(request: HttpRequest) -> HttpResponse:
-    contacts = Contacts.odjects.all()
+    contacts = Contacts.objects.all()
     return render(
-        request, "contact/index.html", {"title": "Contacts", "contacts": contacts}
+        request, "contacts/index.html", {"title": "Contacts", "contacts": contacts}
     )
