@@ -1,10 +1,7 @@
 import logging
 
 
-from django.core.management import BaseCommand, CommandParser
-from apps.contacts.services import generate_contact
-
-from apps.contacts import models
+from django.core.management import BaseCommand
 
 
 class Command(BaseCommand):
@@ -14,7 +11,9 @@ class Command(BaseCommand):
         super().__init__(*args, **kwargs)
         self.logger = logging.getLogger("django")
 
-
     def handle(self, *args, **options):
-        self.logger.info(f"Experemental")
-
+        self.logger.info("Experemental")
+        # group = models.Group.objects.first()
+        # контактс_груп - потому, что в модели релейтед нейм = этому
+        # по умолчанию названиемодели_set
+        # related_contacts = group.contacts_group.all()
