@@ -34,8 +34,7 @@ def edit_contact(request: HttpRequest, pk:int) -> HttpResponse:
 
 def delete_contact(request: HttpRequest, pk) -> HttpResponse:
     contact = Contacts.objects.get(pk=pk)
-    form = ContactsForm(instance=contact)
-
+    contact.delete()
     context = {'contact': contact}
     return render(request, 'contact/delete_contact.html', context)
 
