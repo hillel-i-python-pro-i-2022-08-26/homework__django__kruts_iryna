@@ -21,13 +21,6 @@ def create_contact(request: HttpRequest) -> HttpResponse:
     context = {'form': form}
     return render(request, "contacts/create_contact.html", context)
 
-def get_contact(request: HttpRequest, pk: int) -> HttpResponse:
-    contact = Contacts.objects.get(pk=pk)
-    return None
-    #return render(
-       # request, 'contacts/get_contact.html', {"title": "Get contact", "contact": contact}
-    #)
-
 def edit_contact(request: HttpRequest, pk:int) -> HttpResponse:
     contact = Contacts.objects.get(pk=pk)
     form = ContactsForm(instance=contact)
@@ -41,6 +34,8 @@ def edit_contact(request: HttpRequest, pk:int) -> HttpResponse:
 
 def delete_contact(request: HttpRequest, pk) -> HttpResponse:
     contact = Contacts.objects.get(pk=pk)
-    context = {'item': contact}
+    form = ContactsForm(instance=contact)
+
+    context = {'contact': contact}
     return render(request, 'contact/delete_contact.html', context)
 

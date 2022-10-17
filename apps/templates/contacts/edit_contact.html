@@ -9,22 +9,24 @@
     <li>The name: {{ contact.name }}</li>
     <li>Phone number: {{ contact.phone }}</li>
     <li>Date of birthday: {{ contact.date_of_birth }}</li>
-    <p> Are you sure you want to delete "{{ contact.name }}"</p>
-  <a href="{% url 'contacts:delete' pk=contact.pk %}">
+    <a href="{% url 'contacts:edit' pk=contact.pk %}">
         <button>
-            Delete
+            Edit
         </button>
     </a>
 
 
+
 </ul>
 {% endfor %}
+
+
+
 {% endblock %}
 
-<!-- <form action="{% url 'contacts:delete' contact.id %}" method="POST">
-  {% csrf_token %}
-  <a href="{% url 'base:index' %}">Cancel</a>
-  <input type="submit" name="Confirm">
 
-</form>
-    </a> -->
+<!-- <a href="{% url 'contacts:edit' pk=contact.pk %}">
+        <button>
+            Edit
+        </button>
+    </a> -->>

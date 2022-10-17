@@ -7,6 +7,7 @@ from apps.contacts.models import Contacts
 
 
 class UserForm(ModelForm):
+    date = forms.DateField(widget=SelectDateWidget())
     class Meta:
         model = Contacts
         fields = "__all__"

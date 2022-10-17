@@ -4,13 +4,18 @@
             <a href="{% url 'base:index' %}">Home</a>
         </li>
         <li>
-            <a href="{% url 'contacts:index' %}">Show all and edit contact</a>
-            <p> If you need edit contact by ID, </p>
+            <a href="{% url 'contacts:index' %}">Show all</a>
         </li>
-
+        <li>
+            <a href="{% url 'contacts:edit' %}">Edit contact</a>
+        </li>
         <li>
             <a href="{% url 'contacts:create_contact' %}">Create contact</a>
         </li>
+        <li>
+            <a href="{% url 'contacts:delete' %}">Create contact</a>
+        </li>
+
 
     </ul>
 </header>
