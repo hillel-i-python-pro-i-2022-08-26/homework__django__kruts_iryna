@@ -27,4 +27,4 @@ Main routes:
 + **/contacts/edit_contact/<int:pk>** _Edit by id_
 + **/contacts/create_contact/** _Create new contact_
 + **/contacts/delete_contact/** _Show all contacts and choose which delete_
-+ **/contacts/delete_contact/<int:pk>** _Delete by id_
+
