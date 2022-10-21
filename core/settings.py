@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     "apps.base",
     "apps.contacts",
     "apps.users",
+    "apps.session",
 ]
 
 
