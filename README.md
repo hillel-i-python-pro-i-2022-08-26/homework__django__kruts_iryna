@@ -1,11 +1,11 @@
 #Homework
 
-##Django. Admin (with superuser for this)
+##Django. Session
 
 Main task:
->Создать модель кастомного пользователя. Завязать джанго на эту модель. Можно даже не переопределять поля.
+>Сделать вьюшку с использованием хранилища сессии
 
-All details:[HERE](https://lms.ithillel.ua/groups/62de6dfc9aec6f42f8454737/homeworks/634a11966d844114b7c91aa3)
+All details:[HERE](https://lms.ithillel.ua/groups/62de6dfc9aec6f42f8454737/homeworks/634a134058914414b57dfd71)
 
 Make all actions needed for run homework from zero `make homework-i-run`
 
@@ -21,8 +21,6 @@ $ make homework-i-purge
 
 Main routes:
 
-+ **/amin** - _admin_
++ **/session** - view sessions
 
-login: admin
 
-password: admin123
