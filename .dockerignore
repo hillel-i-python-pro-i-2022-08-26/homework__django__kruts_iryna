@@ -2,6 +2,7 @@
 **
 
 # Exclude
+!docker/app
 !core
 !apps
 !Makefile
