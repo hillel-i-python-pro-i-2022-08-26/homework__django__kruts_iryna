@@ -1,0 +1,22 @@
+<header>
+    <ul>
+        <li>
+            <a href="{% url 'base:index' %}">Home</a>
+        </li>
+        <li>
+            <a href="{% url 'contacts:index' %}">Show all</a>
+        </li>
+        <li>
+            <a href="{% url 'contacts:show_to_edit' %}">Edit contact</a>
+        </li>
+        <li>
+            <a href="{% url 'contacts:create' %}">Create contact</a>
+        </li>
+        <li>
+            <a href="{% url 'contacts:show_to_delete' %}">Delete contact</a>
+        </li>
+        <li>
+            <a href="{% url 'session:index' %}">Session example</a>
+        </li>
+    </ul>
+</header>
