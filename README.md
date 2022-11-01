@@ -1,34 +1,17 @@
 #Homework
 
-##Django. Session
+##ДЗ 15. Django. Docker
 
 Main task:
->Сделать вьюшку с использованием хранилища сессии
+>Упаковать существующую домашку на Django в докер. А точнее - docker-compose.
 
-All details:[HERE](https://lms.ithillel.ua/groups/62de6dfc9aec6f42f8454737/homeworks/634a134058914414b57dfd71)
+All details:[HERE](https://lms.ithillel.ua/groups/62de6dfc9aec6f42f8454737/homeworks/63583c947bb8b92e913bd88d)
 
-Make all actions needed for run homework from zero `make homework-i-run`
-
-```
-$ make homework-i-run
-```
-
-Delete all created artifacts from run `make homework-i-purge`
+Make all actions needed for run homework from zero `make d-homework-i-run`
 
 ```
-$ make homework-i-purge
+$ make d-homework-i-run
 ```
 
-Main routes:
-
-+ **/session** - view sessions
-
-
-.PHONY: init-dev
-# Init environment for development
-init-dev:
-	@pip install --upgrade pip && \
-	pip install --requirement requirements.txt && \
-	pre-commit install
 
 
