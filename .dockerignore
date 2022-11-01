@@ -1,0 +1,9 @@
+# Ignore all
+**
+
+# Exclude
+!core
+!apps
+!Makefile
+!manage.py
+!requirements.txt
