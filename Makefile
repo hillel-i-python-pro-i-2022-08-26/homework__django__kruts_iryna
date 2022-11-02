@@ -1,7 +1,8 @@
 .PHONY: d-homework-i-run
 # Make all actions needed for run homework from zero.
 d-homework-i-run:
-	@make d-run
+	@make init-config && \
+		make d-run
 
 .PHONY: d-homework-i-purge
 # Make all actions needed for purge homework related data.
@@ -12,7 +13,17 @@ d-homework-i-purge:
 .PHONY: d-run
 # Just run
 d-run:
-	@docker-compose \
+	@COMPOSE_DOCKER_CLI_BUILD=1 DOCKER_BUILDKIT=1 \
+		COMPOSE_PROFILES=full_dev \
+		docker-compose \
+			up --build
+
+.PHONY: d-run-i-local-dev
+# Just run
+d-run-i-local-dev:
+	@COMPOSE_DOCKER_CLI_BUILD=1 DOCKER_BUILDKIT=1 \
+		COMPOSE_PROFILES=local_dev \
+		docker-compose \
 			up --build
 
 .PHONY: d-purge
@@ -32,7 +43,11 @@ homework-i-run:
 homework-i-purge:
 	@echo Goodbye
 
-
+.PHONY: init-config
+# Init config files
+init-config:
+	@copy docker-compose.override.dev.yml docker-compose.override.yml && \
+		copy .env.example .env
 
 .PHONY: init-dev
 # Init environment for development
@@ -66,3 +81,9 @@ migrate:
 .PHONY: init-dev-i-create-superuser
 init-dev-i-create-superuser:
 	@DJANGO_SUPERUSER_PASSWORD=admin123 python manage.py createsuperuser --user admin --email admin@gmail.com --no-input
+
+.PHONY: util-i-kill-by-port
+util-i-kill-by-port:
+	@sudo lsof -i:8000 -Fp | head -n 1 | sed 's/^p//' | xargs sudo kill
+
+#@sudo lsof -i:5432 -Fp | head -n 1 | sed 's/^p//' | xargs sudo kill

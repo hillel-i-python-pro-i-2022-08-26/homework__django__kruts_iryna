@@ -18,8 +18,6 @@ RUN pip install --upgrade pip && \
     pip install --requirement requirements.txt
 
 
-#COPY --chown=${USER} --chmod=755 ./docker/app/start.sh /start.sh
-#COPY --chown=${USER} --chmod=755 ./docker/app/entrypoint.sh /entrypoint.sh
 COPY --chown=${USER} --chmod=755 ./docker/app/start.sh /start.sh
 COPY --chown=${USER} --chmod=755 ./docker/app/entrypoint.sh /entrypoint.sh
 COPY --chown=${USER} ./apps apps
