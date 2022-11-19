@@ -1,5 +1,7 @@
 from django.http import HttpResponse, HttpRequest
 from django.shortcuts import render, redirect
+from django.views.generic import UpdateView
+
 from .models import Contacts
 from .forms import ContactsForm, UserForm
 
@@ -21,9 +23,25 @@ def show_all_to_edit(request: HttpRequest) -> HttpResponse:
 def edit_contact(request: HttpRequest, pk: int) -> HttpResponse:
     contact = Contacts.objects.get(pk=pk)
     form = ContactsForm(instance=contact)
+    if request.method == "POST":
+        form = ContactsForm(request.POST)
+        if form.is_valid():
+            form.save()
+
     return render(
         request, "contacts/edit_form.html", {"title": "Edit contact", "form": form}
     )
+
+
+class ContactUpdateView(UpdateView):
+    model = Contacts
+    fields = (
+        "id",
+        "name",
+        "date_of_birth",
+        "avatar",
+    )
+    template_name_suffix = "_update_form"
 
 
 # https://www.youtube.com/watch?v=EX6Tt-ZW0so
