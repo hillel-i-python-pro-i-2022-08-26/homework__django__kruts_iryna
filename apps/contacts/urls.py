@@ -10,7 +10,9 @@ urlpatterns = [
     path("edit_contact/", views.show_all_to_edit, name="show_to_edit"),
     # path("edit_contact/<int:pk>", views.edit_contact, name="edit"),
     path("edit_contact/<int:pk>", views.ContactUpdateView.as_view(), name="edit"),
-    path("create_contact/", views.create_contact, name="create"),
+    # path("create_contact/", views.create_contact, name="create"),
+    path("create_contact/", views.ContactCreateView.as_view(), name="create"),
     path("delete_contact/", views.show_all_to_delete, name="show_to_delete"),
-    path("delete_contact/<int:pk>/", views.delete_contact, name="delete"),
+    # path("delete_contact/", views.ContactDeleteView.as_view(), name="show_to_delete"),
+    path("delete_contact/<int:pk>/", views.ContactDeleteView.as_view(), name="delete"),
 ]
