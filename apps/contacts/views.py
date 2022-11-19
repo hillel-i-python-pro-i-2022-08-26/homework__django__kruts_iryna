@@ -1,16 +1,21 @@
 from django.http import HttpResponse, HttpRequest
 from django.shortcuts import render, redirect
-from django.views.generic import UpdateView
+from django.views.generic import UpdateView, ListView
+
 
 from .models import Contacts
 from .forms import ContactsForm, UserForm
 
 
-def show_all_contacts(request: HttpRequest) -> HttpResponse:
-    contacts = Contacts.objects.all()
-    return render(
-        request, "contacts/index.html", {"title": "Contacts", "contacts": contacts}
-    )
+class ArticleListView(ListView):
+    model = Contacts
+
+
+# def show_all_contacts(request: HttpRequest) -> HttpResponse:
+# contacts = Contacts.objects.all()
+# return render(
+# request, "contacts/index.html", {"title": "Contacts", "contacts": contacts}
+# )
 
 
 def show_all_to_edit(request: HttpRequest) -> HttpResponse:
@@ -20,17 +25,17 @@ def show_all_to_edit(request: HttpRequest) -> HttpResponse:
     )
 
 
-def edit_contact(request: HttpRequest, pk: int) -> HttpResponse:
-    contact = Contacts.objects.get(pk=pk)
-    form = ContactsForm(instance=contact)
-    if request.method == "POST":
-        form = ContactsForm(request.POST)
-        if form.is_valid():
-            form.save()
+# def edit_contact(request: HttpRequest, pk: int) -> HttpResponse:
+# contact = Contacts.objects.get(pk=pk)
+# form = ContactsForm(instance=contact)
+# if request.method == "POST":
+# form = ContactsForm(request.POST)
+# if form.is_valid():
+# form.save()
 
-    return render(
-        request, "contacts/edit_form.html", {"title": "Edit contact", "form": form}
-    )
+# return render(
+# request, "contacts/edit_form.html", {"title": "Edit contact", "form": form}
+# )
 
 
 class ContactUpdateView(UpdateView):

@@ -5,7 +5,8 @@ from apps.contacts import views
 app_name = "contacts"
 
 urlpatterns = [
-    path("", views.show_all_contacts, name="index"),
+    path("", views.ArticleListView.as_view(), name="index"),
+    # path("", views.show_all_contacts, name="index"),
     path("edit_contact/", views.show_all_to_edit, name="show_to_edit"),
     # path("edit_contact/<int:pk>", views.edit_contact, name="edit"),
     path("edit_contact/<int:pk>", views.ContactUpdateView.as_view(), name="edit"),
