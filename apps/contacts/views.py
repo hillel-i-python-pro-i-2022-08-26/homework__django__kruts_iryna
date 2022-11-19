@@ -53,6 +53,6 @@ def delete_contact(request: HttpRequest, pk) -> HttpResponse:
     # context = {'contact': contact}
     return render(
         request,
-        "contact/delete_form.html",
+        "contacts/delete_form.html",
         {"title": "Delete contact", "form": form, "contact": contact},
     )
