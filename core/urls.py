@@ -23,6 +23,7 @@ urlpatterns = [
     path("", include("apps.base.urls")),
     path("contacts/", include("apps.contacts.urls")),
     path("session/", include("apps.session.urls")),
+    path("account/", include("apps.account.urls")),
 ]
 
 

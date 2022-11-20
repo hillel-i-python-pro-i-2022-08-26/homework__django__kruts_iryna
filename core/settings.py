@@ -58,6 +58,7 @@ LOCAL_APPS = [
     "apps.contacts",
     "apps.users",
     "apps.session",
+    "apps.account",
 ]
 THIRD_PARTY_APPS = [
     "crispy_forms",
