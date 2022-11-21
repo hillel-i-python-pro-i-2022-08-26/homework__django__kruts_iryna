@@ -22,8 +22,24 @@
         <li class="nav-item">
             <a class="nav-link active" href="{% url 'session:index' %}">Session example</a>
         </li>
-        <li class="nav-item">
-            <a class="nav-link active" href="{% url 'account:signup' %}">Account</a>
-        </li>
+
     </ul>
+
+<span>
+                    {% if request.user.is_authenticated %}
+                        {{ user.username }}
+                        {% if user.avatar %}
+                        <img class="user_icon" src="{{ user.avatar.url }}" alt="{{ user.username }}"/>
+                    {% endif %}|
+                        <a href="#" class="btn">Profile settings</a>
+                        <a href="{% url 'account:logout' %}" class="btn ">Log Out</a>
+                    {% else %}
+
+                        <div class="new">
+                            <a href="{% url 'account:signup' %}" class="btn btn-secondary">Sign Up</a>
+
+                            <a href="#" class="btn btn-secondary">LogIn</a>
+                        </div>
+                    {% endif %}
+                </span>
 </header>
