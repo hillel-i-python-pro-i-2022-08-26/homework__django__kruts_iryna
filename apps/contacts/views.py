@@ -1,5 +1,8 @@
+from django.contrib.auth import logout, login
+from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
+from django.contrib.auth.views import LoginView
 from django.http import HttpResponse, HttpRequest
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.views.generic import UpdateView, ListView, CreateView, DeleteView
 
@@ -64,3 +67,27 @@ def show_all_to_delete(request: HttpRequest) -> HttpResponse:
 # "contacts/contacts_confirm_delete.html",
 # {"title": "Delete contact", "form": form, "contact": contact},
 # )
+
+
+class RegisterUserForm(CreateView):
+    form_class = UserCreationForm
+    template_name = "contacts/register.html"
+    success_url = reverse_lazy("contacts:login")
+
+    def form_valid(self, form):
+        user = form.save()
+        login(self.request, user)
+        return redirect("contacts:index")
+
+
+class LoginUser(LoginView):
+    form_class = AuthenticationForm
+    template_name = "contacts/login.html"
+
+    # def get_success_url(self):
+    #     return reverse_lazy("base:index")
+
+
+def logout_user(request):
+    logout(request)
+    return redirect("/")

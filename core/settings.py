@@ -58,7 +58,6 @@ LOCAL_APPS = [
     "apps.contacts",
     "apps.users",
     "apps.session",
-    "apps.account",
 ]
 THIRD_PARTY_APPS = [
     "crispy_forms",
@@ -171,4 +170,4 @@ MEDIA_ROOT = BASE_DIR.joinpath("media")
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-#LOGOUT_REDIRECT_URL = "/"
+LOGIN_REDIRECT_URL = "/"
