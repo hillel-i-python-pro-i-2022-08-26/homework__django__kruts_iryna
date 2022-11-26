@@ -3,9 +3,9 @@
 
 {% block content %}
 
-<p>Are you sure you want to delete "{{ contact.name }}"?</p>
+<p>Are you sure you want to delete "{{ contacts.name }}"?</p>
 
-			<form action="{% url 'contacts: delete' contact.pk  %}" method="POST">
+			<form method="POST">
 
 				{% csrf_token %}
 				<a class="btn btn-warning" href="{% url 'base:index' %}">Cancel</a>

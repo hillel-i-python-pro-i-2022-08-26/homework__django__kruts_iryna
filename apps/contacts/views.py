@@ -1,10 +1,14 @@
 from django.contrib.auth import logout, login
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from django.contrib.auth.views import LoginView
-from django.http import HttpResponse, HttpRequest
+from django.http import HttpResponse, HttpRequest, request
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
+from django.utils.decorators import method_decorator
 from django.views.generic import UpdateView, ListView, CreateView, DeleteView
+from django.contrib.auth.mixins import LoginRequiredMixin
+from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly
 
 from .models import Contacts
 
@@ -13,7 +17,7 @@ class ArticleListView(ListView):
     model = Contacts
 
 
-class ContactUpdateView(UpdateView):
+class ContactUpdateView(LoginRequiredMixin, UpdateView):
     model = Contacts
     fields = (
         "id",
@@ -37,13 +41,15 @@ class ContactCreateView(CreateView):
         return reverse_lazy("contacts:create")
 
 
+# class ContactDeleteView(LoginRequiredMixin, DeleteView):
+
 class ContactDeleteView(DeleteView):
     model = Contacts
-
     def get_success_url(self):
         return reverse_lazy("contacts:delete", kwargs={"pk": self.object.pk})
 
 
+@login_required(login_url='contacts:login')
 def show_all_to_edit(request: HttpRequest) -> HttpResponse:
     contacts = Contacts.objects.all()
     return render(
@@ -51,6 +57,7 @@ def show_all_to_edit(request: HttpRequest) -> HttpResponse:
     )
 
 
+@login_required(login_url='contacts:login')
 def show_all_to_delete(request: HttpRequest) -> HttpResponse:
     contacts = Contacts.objects.all()
     return render(

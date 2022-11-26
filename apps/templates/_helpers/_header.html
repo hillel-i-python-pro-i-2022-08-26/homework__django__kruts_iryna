@@ -10,15 +10,19 @@
         <li class="nav-item">
             <a class="nav-link active" href="{% url 'contacts:index' %}">Show all</a>
         </li>
+        {% if request.user.is_authenticated %}
         <li class="nav-item">
             <a class="nav-link active" href="{% url 'contacts:show_to_edit' %}">Edit contact</a>
         </li>
+        {% endif %}
         <li class="nav-item">
             <a class="nav-link active" href="{% url 'contacts:create' %}">Create contact</a>
         </li>
+    {% if request.user.is_authenticated %}
         <li class="nav-item">
             <a class="nav-link active" href="{% url 'contacts:show_to_delete' %}">Delete contact</a>
         </li>
+    {% endif %}
         <li class="nav-item">
             <a class="nav-link active" href="{% url 'session:index' %}">Session example</a>
         </li>
@@ -26,18 +30,7 @@
     </ul>
 
 <span>
-{% comment %}
-                    {% if request.user.is_authenticated %}
-                        {{ user.username }}
-                        {% if user.avatar %}
-                        <img class="user_icon" src="{{ user.avatar.url }}" alt="{{ user.username }}"/>
-                    {% endif %}|
 
-
-                        <a href="#" class="btn">Profile settings</a>
-                        <a href="{% url 'account:logout' %}" class="btn ">Log Out</a>
-                    {% else %}
-{% endcomment %}
                         <div class="new">
                             {% if request.user.is_authenticated %}
 
@@ -49,8 +42,6 @@
                         <a href="{% url 'contacts:logout' %}"  class="btn btn-secondary">Log Out</a>
 
                         {% else %}
-
-
 
 
                             <a href="{% url 'contacts:register' %}" class="btn btn-secondary">Sign Up</a>
