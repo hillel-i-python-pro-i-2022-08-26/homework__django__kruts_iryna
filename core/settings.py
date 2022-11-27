@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/4.1/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.1/ref/settings/
 """
-
+import mimetypes
 from pathlib import Path
 
 # noinspection PyPackageRequirements
@@ -32,20 +32,36 @@ SECRET_KEY = env.str("DJANGO__SECRET_KEY")
 DEBUG = env.bool("DJANGO__DEBUG", False)
 
 ALLOWED_HOSTS = env.list("DJANGO__ALLOWED_HOSTS", default=[])
+
+if DEBUG:
+    import mimetypes
+    mimetypes.add_type("application/javascript", ".js", True)
+
+
 if DEBUG:
     ALLOWED_HOSTS.extend(
         [
             "0.0.0.0",
             "127.0.0.1",
             "localhost",
-            # "http://127.0.0.1:8000/"
+            "127.0.0.1:8000",
         ]
     )
+
+
+
+
+    # mimetypes.add_type("application/javascript", ".js", True)
+
 # if DEBUG:
 #     import socket  # only if you haven't already imported this
 #     hostname, _, ips = socket.gethostbyname_ex(socket.gethostname())
 #     INTERNAL_IPS = [ip[: ip.rfind(".")] + ".1" for ip in ips] + ["127.0.0.1", "10.0.2.2"]
 # Application definition
+
+# import mimetypes
+#
+# mimetypes.add_type("application/javascript", ".js", True)
 
 DJANGO_APPS = [
     "django.contrib.admin",
@@ -73,6 +89,7 @@ CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
 CRISPY_TEMPLATE_PACK = "bootstrap5"
 
 MIDDLEWARE = [
+    # "debug_toolbar.middleware.DebugToolbarMiddleware",
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
@@ -80,7 +97,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
-    "debug_toolbar.middleware.DebugToolbarMiddleware",
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
 
 ]
 
@@ -175,4 +192,46 @@ LOGIN_REDIRECT_URL = "/"
 
 INTERNAL_IPS = [
     "127.0.0.1",
+    "127.0.0.1:8000",
+
 ]
+
+
+
+# DEBUG_TOOLBAR_CONFIG = {
+#     'SHOW_TOOLBAR_CALLBACK': lambda _request: DEBUG
+# }
+
+# DEBUG_TOOLBAR_CONFIG = {'INTERCEPT_REDIRECTS': False,}
+
+# DEBUG_TOOLBAR_CONFIG = {
+#     'DISABLE_PANELS': [
+#         'debug_toolbar.panels.redirects.RedirectsPanel',
+#     ],
+#     'SHOW_TEMPLATE_CONTEXT': True,
+# }
+
+
+# DEBUG_TOOLBAR_CONFIG = {
+#     'SHOW_TOOLBAR_CALLBACK': lambda x: True
+# }
+#
+# DEBUG_TOOLBAR_PATCH_SETTINGS = False
+# debug_toolbar moved here.
+# if DEBUG:
+#     MIDDLEWARE += [
+#         'debug_toolbar.middleware.DebugToolbarMiddleware',
+#     ]
+#     INSTALLED_APPS += [
+#         'debug_toolbar',
+#     ]
+#     INTERNAL_IPS = ['127.0.0.1', ]
+#
+#     # this is the main reason for not showing up the toolbar
+#     import mimetypes
+#
+#     mimetypes.add_type("application/javascript", ".js", True)
+#
+#     DEBUG_TOOLBAR_CONFIG = {
+#         'INTERCEPT_REDIRECTS': False,
+#     }

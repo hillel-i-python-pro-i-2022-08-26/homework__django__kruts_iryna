@@ -1,3 +1,4 @@
+from debug_toolbar.panels import request
 from django.contrib.auth import logout, login
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
@@ -14,6 +15,7 @@ from .models import Contacts
 
 class ArticleListView(ListView):
     model = Contacts
+
 
 
 class ContactUpdateView(LoginRequiredMixin, UpdateView):
