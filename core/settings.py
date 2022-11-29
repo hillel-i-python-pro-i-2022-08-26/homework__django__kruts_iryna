@@ -33,10 +33,6 @@ DEBUG = env.bool("DJANGO__DEBUG", False)
 
 ALLOWED_HOSTS = env.list("DJANGO__ALLOWED_HOSTS", default=[])
 
-if DEBUG:
-    import mimetypes
-    mimetypes.add_type("application/javascript", ".js", True)
-
 
 if DEBUG:
     ALLOWED_HOSTS.extend(
@@ -70,7 +66,6 @@ DJANGO_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    "debug_toolbar",
 ]
 LOCAL_APPS = [
     "apps.base",
@@ -97,8 +92,11 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
-    'debug_toolbar.middleware.DebugToolbarMiddleware',
+    # "apps.middleware.request_log.RequestLogMiddleware",
+    # "apps.contacts.request_log.CountRequestsMiddleware",
 
+    # "apps.session.middleware.CustomMiddleware",
+    "apps.session.middleware.RequestLogMiddleware",
 ]
 
 ROOT_URLCONF = "core.urls"
@@ -134,7 +132,7 @@ DATABASES = {
         # postgres://user:password@host:port/dbname
         env.str(
             "DJANGO__DB_URL",
-            f'postgres://{env.str("POSTGRES_USER")}:{env.str("POSTGRES_PASSWORD")}'
+            f'postgresql://{env.str("POSTGRES_USER")}:{env.str("POSTGRES_PASSWORD")}'
             f'@{env.str("POSTGRES_HOST")}:{env.str("POSTGRES_PORT")}/{env.str("POSTGRES_DB")}',
         )
     )
@@ -196,42 +194,52 @@ INTERNAL_IPS = [
 
 ]
 
-
-
-# DEBUG_TOOLBAR_CONFIG = {
-#     'SHOW_TOOLBAR_CALLBACK': lambda _request: DEBUG
-# }
-
-# DEBUG_TOOLBAR_CONFIG = {'INTERCEPT_REDIRECTS': False,}
-
-# DEBUG_TOOLBAR_CONFIG = {
-#     'DISABLE_PANELS': [
-#         'debug_toolbar.panels.redirects.RedirectsPanel',
-#     ],
-#     'SHOW_TEMPLATE_CONTEXT': True,
-# }
-
-
-# DEBUG_TOOLBAR_CONFIG = {
-#     'SHOW_TOOLBAR_CALLBACK': lambda x: True
-# }
-#
-# DEBUG_TOOLBAR_PATCH_SETTINGS = False
+DEBUG_TOOLBAR_PATCH_SETTINGS = False
 # debug_toolbar moved here.
-# if DEBUG:
-#     MIDDLEWARE += [
-#         'debug_toolbar.middleware.DebugToolbarMiddleware',
-#     ]
-#     INSTALLED_APPS += [
-#         'debug_toolbar',
-#     ]
-#     INTERNAL_IPS = ['127.0.0.1', ]
-#
-#     # this is the main reason for not showing up the toolbar
-#     import mimetypes
-#
-#     mimetypes.add_type("application/javascript", ".js", True)
-#
-#     DEBUG_TOOLBAR_CONFIG = {
-#         'INTERCEPT_REDIRECTS': False,
-#     }
+if DEBUG:
+    MIDDLEWARE += [
+        'debug_toolbar.middleware.DebugToolbarMiddleware',
+    ]
+    INSTALLED_APPS += [
+        'debug_toolbar',
+    ]
+    INTERNAL_IPS = ['127.0.0.1', ]
+
+    # this is the main reason for not showing up the toolbar
+    import mimetypes
+
+    mimetypes.add_type("application/javascript", ".js", True)
+
+    DEBUG_TOOLBAR_CONFIG = {
+        'INTERCEPT_REDIRECTS': False,
+    }
+
+    import socket
+
+    # tricks to have debug toolbar when developing with docker
+    ip = socket.gethostbyname(socket.gethostname())
+    INTERNAL_IPS += [ip[:-1] + '1']
+
+LOGGING = {
+    'version': 1,
+    # The version number of our log
+    'disable_existing_loggers': False,
+    # django uses some of its own loggers for internal operations. In case you want to disable them just replace the False above with true.
+    # A handler for WARNING. It is basically writing the WARNING messages into a file called WARNING.log
+    'handlers': {
+        'file': {
+            'level': 'WARNING',
+            'class': 'logging.FileHandler',
+            'filename': BASE_DIR / 'warning.log',
+        },
+    },
+    # A logger for WARNING which has a handler called 'file'. A logger can have multiple handler
+    'loggers': {
+       # notice the blank '', Usually you would put built in loggers like django or root here based on your needs
+        '': {
+            'handlers': ['file'], #notice how file variable is called in handler which has been defined above
+            'level': 'DEBUG',
+            'propagate': True,
+        },
+    },
+}
