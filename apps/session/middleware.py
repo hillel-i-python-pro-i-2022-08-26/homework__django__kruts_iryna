@@ -1,6 +1,8 @@
 from django.http import request, HttpRequest
 from django.middleware.csrf import logger
 
+from django.contrib.auth.middleware import RemoteUserMiddleware
+
 
 class CountRequestsMiddleware:
 
@@ -8,17 +10,16 @@ class CountRequestsMiddleware:
         self.get_response = get_response
         self.count_requests = 0
         self.count_exceptions = 0
-        # self.path = request.path
 
     def __call__(self, request, *args, **kwargs):
         # session_key = request.session
         host = request.META["HTTP_HOST"] # получаем адрес сервера
-        user_agent = request.META["HTTP_USER_AGENT"]  # получаем данные бразера
         path = request.path  # получаем запрошенный путь
-        user = request.META["REMOTE_USER"]
+        user = request.user # user info
+        session = request.session #session key
         self.count_requests += 1
         # self.path = request.path
-        logger.info(f"Handled {self.count_requests}requests.Host: {host}. Path: {path}. User: {user}")
+        logger.info(f"Handled {self.count_requests}requests. {session.session_key}")
         return self.get_response(request)
 
     def process_exception(self, request, exception):
