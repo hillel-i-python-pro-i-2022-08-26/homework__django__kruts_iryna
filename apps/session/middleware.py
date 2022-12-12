@@ -1,21 +1,29 @@
-# from django.middleware.csrf import logger
-#
-#
-# class CountRequestsMiddleware:
-#
-#     def __init__(self, get_response):
-#         self.get_response = get_response
-#         self.count_requests = 0
-#         self.count_exceptions = 0
-#
-#     def __call__(self, request, *args, **kwargs):
-#         self.count_requests += 1
-#         logger.info(f"Handled {self.count_requests} requests so far")
-#         return self.get_response(request)
-#
-#     def process_exception(self, request, exception):
-#         self.count_exceptions += 1
-#         logger.error(f"Encountered {self.count_exceptions} exceptions so far")
+from django.http import request, HttpRequest
+from django.middleware.csrf import logger
+
+
+class CountRequestsMiddleware:
+
+    def __init__(self, get_response):
+        self.get_response = get_response
+        self.count_requests = 0
+        self.count_exceptions = 0
+        # self.path = request.path
+
+    def __call__(self, request, *args, **kwargs):
+        # session_key = request.session
+        host = request.META["HTTP_HOST"] # получаем адрес сервера
+        user_agent = request.META["HTTP_USER_AGENT"]  # получаем данные бразера
+        path = request.path  # получаем запрошенный путь
+        user = request.META["REMOTE_USER"]
+        self.count_requests += 1
+        # self.path = request.path
+        logger.info(f"Handled {self.count_requests}requests.Host: {host}. Path: {path}. User: {user}")
+        return self.get_response(request)
+
+    def process_exception(self, request, exception):
+        self.count_exceptions += 1
+        logger.error(f"Encountered {self.count_exceptions} exceptions so far")
 # import time
 #
 # from django.http import request
@@ -163,3 +171,6 @@
 #         except Exception as e:
 #             request_logger.exception("Unhandled Exception: " + str(e))
 #         return exception
+
+
+

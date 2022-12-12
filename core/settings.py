@@ -93,6 +93,7 @@ MIDDLEWARE = [
     # "apps.contacts.request_log.CountRequestsMiddleware",
     # "apps.session.middleware.CustomMiddleware",
     # "apps.session.middleware.RequestLogMiddleware",
+"apps.session.middleware.CountRequestsMiddleware",
 ]
 
 ROOT_URLCONF = "core.urls"
