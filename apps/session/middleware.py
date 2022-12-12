@@ -56,110 +56,110 @@
 #         print('before')
 #         return response
 #
-import time
-
-
-
-
+# import time
+#
+#
+#
+#
+# # import logging
+# # from .models import UserDataRequest
+# #
+# # from django.http import HttpResponse
+# #
+# # # Get an instance of a logger
+# # logger = logging.getLogger(__name__)
+# #
+# #
+# # class CustomMiddleware:
+# #     def __init__(self, get_response):
+# #         self.get_response = get_response
+# #         self.logger = logging.getLogger('django')
+# #
+# #     def __call__(self, request):
+# #         session = request.session
+# #         req = request.path
+# #
+# #         logger_message = f'{request.path}'
+# #         self.logger.info(f"Before ------------- {logger_message}, {session}")
+# #
+# #
+# #         response = self.get_response(request)
+# #
+# #         self.logger.info(f"After ---------------- {logger_message}")
+# #
+# #
+# #         #end_time = time.monotonic()
+# #
+# #
+# #         return response
+# #
+# #     def add_info_to_db(self):
+# #         UserDataRequest.objects.create(path_to_request=req)
+#
+#
+#
+#
+# import socket
+# import time
+# import json
 # import logging
-# from .models import UserDataRequest
 #
-# from django.http import HttpResponse
+# from django.contrib.auth import SESSION_KEY, BACKEND_SESSION_KEY, load_backend
 #
-# # Get an instance of a logger
-# logger = logging.getLogger(__name__)
+# from apps.session.models import UserDataRequest
+#
+# request_logger = logging.getLogger(__name__)
+# def get_user(request):
+#     from django.contrib.auth.models import AnonymousUser
+#     try:
+#         user_id = request.session[SESSION_KEY]
+#         backend_path = request.session[BACKEND_SESSION_KEY]
+#         backend = load_backend(backend_path)
+#         user = backend.get_user(user_id) or AnonymousUser()
+#     except KeyError:
+#         user = AnonymousUser()
+#     return user
 #
 #
-# class CustomMiddleware:
+#
+# class RequestLogMiddleware:
+#     """Request Logging Middleware."""
+#
 #     def __init__(self, get_response):
 #         self.get_response = get_response
 #         self.logger = logging.getLogger('django')
 #
 #     def __call__(self, request):
-#         session = request.session
-#         req = request.path
 #
-#         logger_message = f'{request.path}'
-#         self.logger.info(f"Before ------------- {logger_message}, {session}")
+#         log_data = {
+#             # "user_name": request.user.first_name,
+#             # "user_name": get_user(request),
+#             "user_name": request.user,
+#             "session_id" : request.session,
+#             "server_hostname": socket.gethostname(),
+#             "request_method": request.method,
+#             "request_path": request.get_full_path(),
+#         }
 #
+#
+#         # UserDataRequest.objects.create(
+#         #     path_to_request=log_data["user_name"],
+#         #     session_key=log_data["session_id"],
+#         #     # user=str(log_data["request_path"])
+#         # )
 #
 #         response = self.get_response(request)
 #
-#         self.logger.info(f"After ---------------- {logger_message}")
+#         # self.logger.info(f"Before ------------- {log_data}")
 #
-#
-#         #end_time = time.monotonic()
 #
 #
 #         return response
 #
-#     def add_info_to_db(self):
-#         UserDataRequest.objects.create(path_to_request=req)
-
-
-
-
-import socket
-import time
-import json
-import logging
-
-from django.contrib.auth import SESSION_KEY, BACKEND_SESSION_KEY, load_backend
-
-from apps.session.models import UserDataRequest
-
-request_logger = logging.getLogger(__name__)
-def get_user(request):
-    from django.contrib.auth.models import AnonymousUser
-    try:
-        user_id = request.session[SESSION_KEY]
-        backend_path = request.session[BACKEND_SESSION_KEY]
-        backend = load_backend(backend_path)
-        user = backend.get_user(user_id) or AnonymousUser()
-    except KeyError:
-        user = AnonymousUser()
-    return user
-
-
-
-class RequestLogMiddleware:
-    """Request Logging Middleware."""
-
-    def __init__(self, get_response):
-        self.get_response = get_response
-        self.logger = logging.getLogger('django')
-
-    def __call__(self, request):
-
-        log_data = {
-            # "user_name": request.user.first_name,
-            # "user_name": get_user(request),
-            "user_name": request.user,
-            "session_id" : request.session,
-            "server_hostname": socket.gethostname(),
-            "request_method": request.method,
-            "request_path": request.get_full_path(),
-        }
-
-
-        # UserDataRequest.objects.create(
-        #     path_to_request=log_data["user_name"],
-        #     session_key=log_data["session_id"],
-        #     # user=str(log_data["request_path"])
-        # )
-
-        response = self.get_response(request)
-
-        # self.logger.info(f"Before ------------- {log_data}")
-        
-
-
-        return response
-
-    # Log unhandled exceptions as well
-    def process_exception(self, request, exception):
-        try:
-            raise exception
-        except Exception as e:
-            request_logger.exception("Unhandled Exception: " + str(e))
-        return exception
+#     # Log unhandled exceptions as well
+#     def process_exception(self, request, exception):
+#         try:
+#             raise exception
+#         except Exception as e:
+#             request_logger.exception("Unhandled Exception: " + str(e))
+#         return exception

@@ -92,7 +92,7 @@ MIDDLEWARE = [
     # "apps.middleware.request_log.RequestLogMiddleware",
     # "apps.contacts.request_log.CountRequestsMiddleware",
     # "apps.session.middleware.CustomMiddleware",
-    "apps.session.middleware.RequestLogMiddleware",
+    # "apps.session.middleware.RequestLogMiddleware",
 ]
 
 ROOT_URLCONF = "core.urls"
@@ -184,38 +184,40 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 LOGIN_REDIRECT_URL = "/"
 
-INTERNAL_IPS = [
-    "127.0.0.1",
-    "127.0.0.1:8000",
-]
+# INTERNAL_IPS = [
+#     "127.0.0.1",
+#     "127.0.0.1:8000",
+# ]
 
-DEBUG_TOOLBAR_PATCH_SETTINGS = False
+# DEBUG_TOOLBAR_PATCH_SETTINGS = False
+
+
 # debug_toolbar moved here.
-if DEBUG:
-    MIDDLEWARE += [
-        "debug_toolbar.middleware.DebugToolbarMiddleware",
-    ]
-    INSTALLED_APPS += [
-        "debug_toolbar",
-    ]
-    INTERNAL_IPS = [
-        "127.0.0.1",
-    ]
-
-    # this is the main reason for not showing up the toolbar
-    import mimetypes
-
-    mimetypes.add_type("application/javascript", ".js", True)
-
-    DEBUG_TOOLBAR_CONFIG = {
-        "INTERCEPT_REDIRECTS": False,
-    }
-
-    import socket
-
-    # tricks to have debug toolbar when developing with docker
-    ip = socket.gethostbyname(socket.gethostname())
-    INTERNAL_IPS += [ip[:-1] + "1"]
+# if DEBUG:
+#     MIDDLEWARE += [
+#         "debug_toolbar.middleware.DebugToolbarMiddleware",
+#     ]
+#     INSTALLED_APPS += [
+#         "debug_toolbar",
+#     ]
+#     INTERNAL_IPS = [
+#         "127.0.0.1",
+#     ]
+#
+#     # this is the main reason for not showing up the toolbar
+#     import mimetypes
+#
+#     mimetypes.add_type("application/javascript", ".js", True)
+#
+#     DEBUG_TOOLBAR_CONFIG = {
+#         "INTERCEPT_REDIRECTS": False,
+#     }
+#
+#     import socket
+#
+#     # tricks to have debug toolbar when developing with docker
+#     ip = socket.gethostbyname(socket.gethostname())
+#     INTERNAL_IPS += [ip[:-1] + "1"]
 
 # LOGGING = {
 #     'version': 1,
