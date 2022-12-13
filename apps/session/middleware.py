@@ -1,7 +1,10 @@
-from django.http import request, HttpRequest
+from django.http import request, HttpRequest, response, HttpResponse
 from django.middleware.csrf import logger
+from django.contrib.auth import get_user
 
 from django.contrib.auth.middleware import RemoteUserMiddleware
+
+from apps.session.models import UserDataRequest
 
 
 class CountRequestsMiddleware:
@@ -16,15 +19,35 @@ class CountRequestsMiddleware:
         host = request.META["HTTP_HOST"] # получаем адрес сервера
         path = request.path  # получаем запрошенный путь
         user = request.user # user info
-        session = request.session #session key
+        # session = request.session #session key
+
         self.count_requests += 1
+
         # self.path = request.path
-        logger.info(f"Handled {self.count_requests}requests. {session.session_key}")
+        logger.info(f"Handled {self.count_requests} requests. User : {get_user(request)}")
+        print(get_user(request))
+        if not request.session.session_key:
+            request.session.save()
+        session_key = request.session.session_key
+        visitor = UserDataRequest.objects.filter(
+            path_to_request=path, session_key=session_key, user=get_user(request)
+        ).first()
+        if visitor is None:
+            visitor = UserDataRequest.objects(get_user(request), request.path, session_key)
+            # visitor = UserDataRequest.objects(get_user(request), request.path, session_key)
+
+        visitor = visitor.count() + 1
+        visitor.save()
+
         return self.get_response(request)
+        # return response
+
+
 
     def process_exception(self, request, exception):
         self.count_exceptions += 1
         logger.error(f"Encountered {self.count_exceptions} exceptions so far")
+
 # import time
 #
 # from django.http import request
@@ -60,7 +83,7 @@ class CountRequestsMiddleware:
 #
 #     def __call__(self, request):
 #         print('afte')
-#         #Before responce
+#         #Before response
 #         response = self.get_response(request)
 #         print('before')
 #         return response
