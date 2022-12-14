@@ -16,8 +16,6 @@ from .models import Contacts
 class ArticleListView(ListView):
     model = Contacts
 
-
-
 class ContactUpdateView(LoginRequiredMixin, UpdateView):
     model = Contacts
     fields = (

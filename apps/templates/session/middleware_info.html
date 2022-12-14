@@ -1,0 +1,12 @@
+{% extends "_helpers/_base.html" %}
+
+{% block content %}
+
+    {% for session in object_list %}
+<ul>
+<li> {{ session }}</li>
+        </ul>
+
+
+{% endfor %}
+{% endblock %}
