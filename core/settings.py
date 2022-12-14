@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/4.1/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.1/ref/settings/
 """
-import mimetypes
+
 from pathlib import Path
 
 # noinspection PyPackageRequirements
@@ -224,7 +224,9 @@ LOGIN_REDIRECT_URL = "/"
 #     'version': 1,
 #     # The version number of our log
 #     'disable_existing_loggers': False,
-#     # django uses some of its own loggers for internal operations. In case you want to disable them just replace the False above with true.
+#     # django uses some of its own loggers for internal operations. In case you want to disable them just replace
+#     the False above with true.
+
 #     # A handler for WARNING. It is basically writing the WARNING messages into a file called WARNING.log
 #     'handlers': {
 #         'file': {
@@ -243,4 +245,3 @@ LOGIN_REDIRECT_URL = "/"
 #         },
 #     },
 # }
-

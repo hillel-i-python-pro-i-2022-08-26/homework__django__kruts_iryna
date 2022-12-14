@@ -6,6 +6,7 @@ from apps.session.models import UserDataRequest
 
 class RequestsLoggingMiddleware:
     """Request Logging Middleware."""
+
     def __init__(self, get_response):
         self.get_response = get_response
         self.count_requests = 0
@@ -20,7 +21,9 @@ class RequestsLoggingMiddleware:
             session.save()
         session_key = session.session_key
         self.count_requests += 1
-        logger.info(f"Handled {self.count_requests} requests. User : {get_user(request)}")
+        logger.info(
+            f"Handled {self.count_requests} requests. User : {get_user(request)}"
+        )
 
         visitor = UserDataRequest.objects.filter(
             session_key=session_key, path_to_request=request.path
@@ -38,8 +41,8 @@ class RequestsLoggingMiddleware:
             visitor.session_key = session_key
 
         counter += 1
-        session['counter'] = counter
-        visitor.counter = session['counter']
+        session["counter"] = counter
+        visitor.counter = session["counter"]
 
         visitor.save()
 
@@ -48,6 +51,7 @@ class RequestsLoggingMiddleware:
     def process_exception(self, request, exception):
         self.count_exceptions += 1
         logger.error(f"Encountered {self.count_exceptions} exceptions so far")
+
 
 # import time
 #
@@ -196,6 +200,3 @@ class RequestsLoggingMiddleware:
 #         except Exception as e:
 #             request_logger.exception("Unhandled Exception: " + str(e))
 #         return exception
-
-
-

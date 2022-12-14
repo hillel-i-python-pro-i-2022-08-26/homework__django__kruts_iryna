@@ -1,19 +1,11 @@
 import datetime
-import logging
-from http import server
-from http.client import HTTPConnection
-
-from django.contrib.sites import requests
 from django.core.handlers.wsgi import WSGIRequest
 from django.http import HttpRequest, HttpResponse
-from django.middleware import http
 from django.shortcuts import render
-from django.test import RequestFactory
-from django.views.generic import ListView, TemplateView
+from django.views.generic import ListView
 
 from apps.session.models import UserDataRequest
 
-# from apps.session.models import UserDataRequest
 
 KEY__COUNT_OF_VISITS = "count_of_visits"
 
@@ -34,6 +26,7 @@ def session_example_view(request: WSGIRequest | HttpRequest) -> HttpResponse:
             "title": "Session example",
         },
     )
+
 
 # class ArticleListView(ListView):
 #     model = UserDataRequest
@@ -56,8 +49,10 @@ class AllSessionsView(ListView):
         context = super().get_context_data(**kwargs)
         context["title"] = "All session info"
         visitor = UserDataRequest.objects.all()
-        context['object_list'] = visitor
+        context["object_list"] = visitor
         return context
+
+
 class CurrentSessionViews(ListView):
     model = UserDataRequest
     template_name = "session/current_session.html"
@@ -66,10 +61,13 @@ class CurrentSessionViews(ListView):
         context = super().get_context_data(**kwargs)
         context["title"] = "Current session"
 
-        visitor = UserDataRequest.objects.filter(session_key=self.kwargs['session_key']) # some mistake
+        visitor = UserDataRequest.objects.filter(
+            session_key=self.kwargs["session_key"]
+        )  # some mistake
 
-        context['object_list'] = visitor
+        context["object_list"] = visitor
         return context
+
 
 class CurrentUserViews(ListView):
     model = UserDataRequest
@@ -79,7 +77,7 @@ class CurrentUserViews(ListView):
         context = super().get_context_data(**kwargs)
         context["title"] = "Current user session info"
 
-        visitor = UserDataRequest.objects.filter(user=self.kwargs['pk'])
+        visitor = UserDataRequest.objects.filter(user=self.kwargs["pk"])
 
-        context['object_list'] = visitor
+        context["object_list"] = visitor
         return context

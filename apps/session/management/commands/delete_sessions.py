@@ -14,9 +14,7 @@ class Command(BaseCommand):
         self.logger = logging.getLogger("django")
 
     def add_arguments(self, parser: CommandParser):
-        parser.add_argument(
-            "--delete_sessions", help="Delete session info"
-        )
+        parser.add_argument("--delete_sessions", help="Delete session info")
 
     def handle(self, *args, **options):
 
