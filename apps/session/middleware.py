@@ -1,48 +1,49 @@
-from django.http import request, HttpRequest, response, HttpResponse
 from django.middleware.csrf import logger
 from django.contrib.auth import get_user
-
-from django.contrib.auth.middleware import RemoteUserMiddleware
-
+from django.core.handlers.wsgi import WSGIRequest
 from apps.session.models import UserDataRequest
 
 
-class CountRequestsMiddleware:
-
+class RequestsLoggingMiddleware:
+    """Request Logging Middleware."""
     def __init__(self, get_response):
         self.get_response = get_response
         self.count_requests = 0
         self.count_exceptions = 0
 
-    def __call__(self, request, *args, **kwargs):
-        # session_key = request.session
-        host = request.META["HTTP_HOST"] # получаем адрес сервера
-        path = request.path  # получаем запрошенный путь
-        user = request.user # user info
-        # session = request.session #session key
-
+    def __call__(self, request: WSGIRequest, *args, **kwargs):
+        # host = request.META["HTTP_HOST"] # получаем адрес сервера
+        # path = request.path  # получаем запрошенный путь
+        # user = get_user(request) # user info
+        session = request.session
+        if not session.session_key:
+            session.save()
+        session_key = session.session_key
         self.count_requests += 1
-
-        # self.path = request.path
         logger.info(f"Handled {self.count_requests} requests. User : {get_user(request)}")
-        print(get_user(request))
-        if not request.session.session_key:
-            request.session.save()
-        session_key = request.session.session_key
-        visitor = UserDataRequest.objects.filter(
-            path_to_request=path, session_key=session_key, user=get_user(request)
-        ).first()
-        if visitor is None:
-            visitor = UserDataRequest.objects(get_user(request), request.path, session_key)
-            # visitor = UserDataRequest.objects(get_user(request), request.path, session_key)
 
-        visitor = visitor.count() + 1
+        visitor = UserDataRequest.objects.filter(
+            session_key=session_key, path_to_request=request.path
+        ).first()
+
+        if visitor is not None:
+            counter = visitor.counter
+        else:
+            visitor = UserDataRequest()
+            counter = 0
+            if request.user.is_authenticated:
+                visitor.user = get_user(request)
+
+            visitor.path_to_request = request.path
+            visitor.session_key = session_key
+
+        counter += 1
+        session['counter'] = counter
+        visitor.counter = session['counter']
+
         visitor.save()
 
         return self.get_response(request)
-        # return response
-
-
 
     def process_exception(self, request, exception):
         self.count_exceptions += 1
