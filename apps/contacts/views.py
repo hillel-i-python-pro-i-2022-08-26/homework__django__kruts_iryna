@@ -41,10 +41,12 @@ def create_contact(request: HttpRequest) -> HttpResponse:
     context = {"form": form}
     return render(request, "contacts/create.html", context)
 
+
 class ContactDeleteView(DeleteView):
     model = Contacts
     template_name = "contacts/contacts_confirm_delete.html"
     success_url = reverse_lazy("base:index")
+
 
 def show_all_to_delete(request: HttpRequest) -> HttpResponse:
     contacts = Contacts.objects.all()
