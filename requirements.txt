@@ -30,3 +30,8 @@ crispy-bootstrap5==0.7
 
 # For images in django
 pillow==9.3.0
+
+
+aiohttp[speedups]==3.8.3
+
+beautifulsoup4==4.11.1
