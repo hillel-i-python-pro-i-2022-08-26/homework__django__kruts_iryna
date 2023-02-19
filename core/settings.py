@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     "apps.contacts",
     "apps.users",
     "apps.session",
+    "rest_framework"
 ]
 
 
