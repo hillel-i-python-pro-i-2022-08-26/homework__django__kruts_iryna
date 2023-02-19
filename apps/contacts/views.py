@@ -1,49 +1,31 @@
-from django.forms import model_to_dict
 from django.http import HttpResponse, HttpRequest
 from django.shortcuts import render, redirect
+from rest_framework import generics
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from .models import Contacts
 from .forms import ContactsForm, UserForm
-from rest_framework import generics
 
-from ..serializers import ContactsSerializer
-
-
-# class ContactAPIView(generics.ListAPIView):
-#     queryset = Contacts.objects.all()
-#     serializer_class = ContactsSerializer
+from apps.contacts.serializers import ContactsSerializer
 
 
-class ContactAPIView(APIView):
-    def get(self, requests):
-        lst = Contacts.objects.all()
-
-        return Response({'contacts': ContactsSerializer(lst, many=True).data})
-    def post(self, request):
-        serializer = ContactsSerializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        serializer.save()
-
-        return Response({'contact': serializer.data})
-
-    def put(self, request, *args, **kwargs):
-        pk = kwargs.get("pk", None)
-        if not pk:
-            return Response({"error": "Method PUT not allowed"})
-
-        try:
-            instance = Contacts.objects.get(pk=pk)
-        except:
-            return Response({"error": "Method PUT not allowed"})
-
-        serializer = ContactsSerializer(data=request.data, instance=instance)
-        serializer.is_valid(raise_exception=True)
-        serializer.save()
-        return Response({'contact': serializer.data})
+class ContactsAPIList(generics.ListCreateAPIView):
+    queryset = Contacts.objects.all()
+    serializer_class = ContactsSerializer
+    # permission_classes = (IsAuthenticatedOrReadOnly, )
 
 
+class ContactsAPIUpdate(generics.RetrieveUpdateAPIView):
+    queryset = Contacts.objects.all()
+    serializer_class = ContactsSerializer
+    # permission_classes = (IsOwnerOrReadOnly, )
+
+
+class ContactsAPIDestroy(generics.RetrieveDestroyAPIView):
+    queryset = Contacts.objects.all()
+    serializer_class = ContactsSerializer
+    # permission_classes = (IsAdminOrReadOnly, )
 
 def show_all_contacts(request: HttpRequest) -> HttpResponse:
     contacts = Contacts.objects.all()
