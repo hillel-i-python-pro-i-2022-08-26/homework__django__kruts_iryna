@@ -1,8 +1,6 @@
 from django.http import HttpResponse, HttpRequest
 from django.shortcuts import render, redirect
 from rest_framework import generics
-from rest_framework.response import Response
-from rest_framework.views import APIView
 
 from .models import Contacts
 from .forms import ContactsForm, UserForm
@@ -26,6 +24,7 @@ class ContactsAPIDestroy(generics.RetrieveDestroyAPIView):
     queryset = Contacts.objects.all()
     serializer_class = ContactsSerializer
     # permission_classes = (IsAdminOrReadOnly, )
+
 
 def show_all_contacts(request: HttpRequest) -> HttpResponse:
     contacts = Contacts.objects.all()

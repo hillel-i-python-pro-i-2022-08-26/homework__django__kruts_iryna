@@ -28,12 +28,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 if DEBUG:
-    ALLOWED_HOSTS.extend(
-        [
-            "0.0.0.0",
-            '127.0.0.1'
-        ]
-    )
+    ALLOWED_HOSTS.extend(["0.0.0.0", "127.0.0.1"])
 
 
 # Application definition
@@ -49,7 +44,7 @@ INSTALLED_APPS = [
     "apps.contacts",
     "apps.users",
     "apps.session",
-    "rest_framework"
+    "rest_framework",
 ]
 
 
